@@ -44,8 +44,9 @@ if __name__ == "__main__":
     dl.set_log_active(False)
     sep = "\n"+"#"*80+"\n"
     ndim = 2
-    nx = 64
-    ny = 64
+    argv = sys.argv
+    nx = int(argv[1]) if len(argv) > 1 else 64
+    ny = int(argv[2]) if len(argv) > 2 else nx
     mesh = dl.UnitSquareMesh(nx, ny)
     
     rank = dl.MPI.rank(mesh.mpi_comm())

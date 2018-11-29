@@ -70,8 +70,10 @@ if __name__ == "__main__":
     dl.set_log_active(False)
     sep = "\n"+"#"*80+"\n"
     ndim = 2
-    nx = 64  
-    ny = 64
+    argv = sys.argv
+    nsamples = int(argv[1]) if len(argv) > 1 else 100
+    nx = int(argv[2]) if len(argv) > 2 else 64
+    ny = int(argv[3]) if len(argv) > 3 else nx
     mesh = dl.UnitSquareMesh(nx, ny)
     
     rank = dl.MPI.rank(mesh.mpi_comm())
@@ -227,7 +229,7 @@ if __name__ == "__main__":
         fid_u = dl.File(kernel.name()+"/state.pvd")
         chain = MCMC(kernel)
         chain.parameters["burn_in"] = 0
-        chain.parameters["number_of_samples"] = 100
+        chain.parameters["number_of_samples"] = nsamples
         chain.parameters["print_progress"] = 10            
         tracer = FullTracer(chain.parameters["number_of_samples"], Vh, fid_m, fid_u)
         if rank != 0:
